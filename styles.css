@@ -1,0 +1,212 @@
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f0f2f5;
+  color: #111;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #29b6f6 0%, #0288d1 40%, #01579b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle radial light in upper-left (matches screenshot) */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(circle, rgba(100, 200, 255, 0.35) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Badge pill */
+.hero__badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  padding: 7px 18px;
+  border-radius: 50px;
+  backdrop-filter: blur(4px);
+  text-transform: uppercase;
+}
+
+/* Main heading */
+.hero__title {
+  font-size: clamp(36px, 6vw, 56px);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+
+/* Sub-text */
+.hero__subtitle {
+  font-size: clamp(15px, 2vw, 17px);
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.65;
+  max-width: 520px;
+}
+
+/* CTA button */
+.hero__cta {
+  display: inline-block;
+  margin-top: 8px;
+  background: #fff;
+  color: #0277bd;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 16px 36px;
+  border-radius: 50px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.hero__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+}
+
+.hero__cta:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================================
+   FEATURES SECTION
+   ============================================================ */
+.features {
+  background: #f0f2f5;
+  padding: 56px 24px 72px;
+}
+
+.features__grid {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+
+/* Second row: 2 cards centred */
+.feature-card:nth-child(4) {
+  grid-column: 1 / 2;
+}
+.feature-card:nth-child(5) {
+  grid-column: 2 / 3;
+}
+
+/* ============================================================
+   FEATURE CARD
+   ============================================================ */
+.feature-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 28px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.feature-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+}
+
+/* Blue icon box */
+.feature-card__icon {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, #29b6f6, #0288d1);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.feature-card__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.feature-card__title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.2;
+}
+
+.feature-card__desc {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 720px) {
+  .features__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-card:nth-child(4),
+  .feature-card:nth-child(5) {
+    grid-column: auto;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 900px) {
+  .features__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .feature-card:nth-child(4),
+  .feature-card:nth-child(5) {
+    grid-column: auto;
+  }
+}

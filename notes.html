@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartCanvas – My Notes</title>
+  <link rel="stylesheet" href="notes-styles.css" />
+</head>
+<body class="light-theme">
+
+  <!-- ===== HOME PAGE ===== -->
+  <div id="page-home" class="page active">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <h1 class="topbar__title">My Notes</h1>
+      <button class="topbar__icon-btn" id="theme-toggle" aria-label="Toggle theme">
+        <!-- Sun icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-wrap">
+      <svg class="search-wrap__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" class="search-wrap__input" placeholder="Search notes..." id="search-input" />
+    </div>
+
+    <!-- Notes List -->
+    <main class="notes-main" id="notes-container">
+      <!-- Empty state (shown when no notes) -->
+      <div class="empty-state" id="empty-state">
+        <!-- Notebook + pencil SVG icon -->
+        <svg class="empty-state__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"
+             fill="none" stroke="#64c8f0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Notebook body -->
+          <rect x="14" y="12" width="44" height="56" rx="5"/>
+          <!-- Spiral rings -->
+          <path d="M14 22 Q8 22 8 28 Q8 34 14 34"/>
+          <path d="M14 38 Q8 38 8 44 Q8 50 14 50"/>
+          <!-- Lines on page -->
+          <line x1="26" y1="30" x2="50" y2="30"/>
+          <line x1="26" y1="40" x2="50" y2="40"/>
+          <!-- Pencil -->
+          <rect x="46" y="8" width="8" height="22" rx="2" transform="rotate(35 50 19)"/>
+          <polygon points="46,28 54,28 50,36" transform="rotate(35 50 28)"/>
+        </svg>
+        <p class="empty-state__title">No notes yet</p>
+        <p class="empty-state__sub">Tap + to start drawing</p>
+      </div>
+
+      <!-- Notes grid (populated by JS) -->
+      <div class="notes-grid" id="notes-grid"></div>
+    </main>
+
+    <!-- FAB (Add Note) -->
+    <button class="fab" id="fab-btn" aria-label="Add new note">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+           stroke="white" stroke-width="2.5" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </button>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="bottom-nav__item active" data-page="home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <span>Home</span>
+      </button>
+      <button class="bottom-nav__item" data-page="settings">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06
+                   a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09
+                   A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83
+                   l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09
+                   A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83
+                   l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09
+                   a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83
+                   l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09
+                   a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ===== SETTINGS PAGE ===== -->
+  <div id="page-settings" class="page">
+
+    <!-- Top Bar -->
+    <header class="topbar topbar--settings">
+      <button class="topbar__back-btn" id="settings-back" aria-label="Go back">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+      <h1 class="topbar__title topbar__title--center">Settings</h1>
+    </header>
+
+    <main class="settings-main">
+
+      <!-- APPEARANCE -->
+      <p class="settings-section-label">APPEARANCE</p>
+      <div class="settings-card">
+        <p class="settings-card__title">Theme Mode</p>
+        <p class="settings-card__sub">Choose your preferred interface theme</p>
+        <div class="radio-group" id="theme-radio-group">
+          <label class="radio-item">
+            <input type="radio" name="theme" value="light" checked />
+            <span class="radio-custom"></span>
+            Light
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="theme" value="dark" />
+            <span class="radio-custom"></span>
+            Dark
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="theme" value="system" />
+            <span class="radio-custom"></span>
+            System Auto
+          </label>
+        </div>
+      </div>
+
+      <!-- DRAWING -->
+      <p class="settings-section-label">DRAWING</p>
+      <div class="settings-card">
+        <div class="settings-card__row">
+          <div>
+            <p class="settings-card__title">Default Pen Width</p>
+            <p class="settings-card__sub">Adjust the default thickness for new strokes (<span id="pen-label">3</span>px)</p>
+          </div>
+          <button class="icon-btn-flat" id="pen-reset" aria-label="Reset pen width">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="#0288d1" stroke-width="2.5" stroke-linecap="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </button>
+        </div>
+        <div class="slider-row">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="slider-row__icon">
+            <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+            <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+            <path d="M2 2l7.586 7.586"/>
+            <circle cx="11" cy="11" r="2"/>
+          </svg>
+          <input type="range" min="1" max="10" value="3" class="pen-slider" id="pen-slider" />
+        </div>
+      </div>
+
+      <!-- DATA & STORAGE -->
+      <p class="settings-section-label">DATA &amp; STORAGE</p>
+      <div class="settings-card">
+        <div class="settings-card__row">
+          <div>
+            <p class="settings-card__title">Clear All Data</p>
+            <p class="settings-card__sub">Permanently delete all notes from this device</p>
+          </div>
+          <button class="btn-clear" id="clear-btn">Clear</button>
+        </div>
+      </div>
+
+      <!-- ABOUT -->
+      <p class="settings-section-label">ABOUT</p>
+      <div class="settings-card">
+        <div class="settings-card__row">
+          <div class="about-info">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="#0288d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="about-info__icon">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <div>
+              <p class="settings-card__title">SmartCanvas</p>
+              <p class="settings-card__sub">The frictionless digital notebook.</p>
+            </div>
+          </div>
+          <span class="version-badge">v1.0.0</span>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="bottom-nav__item" data-page="home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <span>Home</span>
+      </button>
+      <button class="bottom-nav__item active" data-page="settings">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06
+                   a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09
+                   A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83
+                   l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09
+                   A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83
+                   l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09
+                   a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83
+                   l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09
+                   a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="notes-script.js"></script>
+</body>
+</html>
