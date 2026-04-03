@@ -528,8 +528,8 @@ function importImageToBoard(file){
 
   img.onload = () => {
     pushUndo();
-    const W = drawCanvas.clientWidth;
-    const H = drawCanvas.clientHeight;
+    const W = drawCanvas.width / devicePixelRatio;
+    const H = drawCanvas.height / devicePixelRatio;
     const pad = 24;
     const maxW = Math.max(1, W - pad * 2);
     const maxH = Math.max(1, H - pad * 2);
