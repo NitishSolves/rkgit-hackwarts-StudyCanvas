@@ -517,7 +517,7 @@ document.getElementById('btn-clear').addEventListener('click',()=>{
    IMAGE IMPORT
 ════════════════════════════════════ */
 function importImageToBoard(file){
-  if(!file)return;
+  if(!file) return;
   if(!file.type.startsWith('image/')){
     toast('⚠️ Please choose an image file');
     return;
@@ -526,7 +526,7 @@ function importImageToBoard(file){
   const url = URL.createObjectURL(file);
   const img = new Image();
 
-  img.onload = ()=>{
+  img.onload = () => {
     pushUndo();
     const W = drawCanvas.clientWidth;
     const H = drawCanvas.clientHeight;
@@ -550,7 +550,7 @@ function importImageToBoard(file){
     toast('🖼️ Image imported');
   };
 
-  img.onerror = ()=>{
+  img.onerror = () => {
     URL.revokeObjectURL(url);
     imageInput.value = '';
     toast('⚠️ Could not load image');
@@ -559,11 +559,11 @@ function importImageToBoard(file){
   img.src = url;
 }
 
-document.getElementById('btn-import-image').addEventListener('click',()=>{
+document.getElementById('btn-import-image').addEventListener('click',() => {
   imageInput.click();
 });
 
-imageInput.addEventListener('change',()=>{
+imageInput.addEventListener('change',() => {
   const file = imageInput.files && imageInput.files[0];
   importImageToBoard(file);
 });
