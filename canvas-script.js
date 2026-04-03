@@ -29,6 +29,7 @@ const gCtx = gridCanvas.getContext('2d');
 const dCtx = drawCanvas.getContext('2d');
 const tCtx = tempCanvas.getContext('2d');
 const textBox  = document.getElementById('text-box');
+const imageInput = document.getElementById('import-image-input');
 
 /* ── STATE ── */
 let tool      = 'pen';
@@ -510,6 +511,61 @@ document.getElementById('btn-clear').addEventListener('click',()=>{
     dCtx.clearRect(0,0,drawCanvas.clientWidth,drawCanvas.clientHeight);
     markDirty(); toast('Page cleared');
   });
+});
+
+/* ════════════════════════════════════
+   IMAGE IMPORT
+════════════════════════════════════ */
+function importImageToBoard(file){
+  if(!file)return;
+  if(!file.type.startsWith('image/')){
+    toast('⚠️ Please choose an image file');
+    return;
+  }
+
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+
+  img.onload = ()=>{
+    pushUndo();
+    const W = drawCanvas.clientWidth;
+    const H = drawCanvas.clientHeight;
+    const pad = 24;
+    const maxW = Math.max(1, W - pad * 2);
+    const maxH = Math.max(1, H - pad * 2);
+    const scale = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight, 1);
+    const w = Math.max(1, img.naturalWidth * scale);
+    const h = Math.max(1, img.naturalHeight * scale);
+    const x = (W - w) / 2;
+    const y = (H - h) / 2;
+
+    dCtx.globalAlpha = 1;
+    dCtx.globalCompositeOperation = 'source-over';
+    dCtx.drawImage(img, x, y, w, h);
+    resetCtx(dCtx);
+
+    URL.revokeObjectURL(url);
+    imageInput.value = '';
+    markDirty();
+    toast('🖼️ Image imported');
+  };
+
+  img.onerror = ()=>{
+    URL.revokeObjectURL(url);
+    imageInput.value = '';
+    toast('⚠️ Could not load image');
+  };
+
+  img.src = url;
+}
+
+document.getElementById('btn-import-image').addEventListener('click',()=>{
+  imageInput.click();
+});
+
+imageInput.addEventListener('change',()=>{
+  const file = imageInput.files && imageInput.files[0];
+  importImageToBoard(file);
 });
 
 /* ════════════════════════════════════
