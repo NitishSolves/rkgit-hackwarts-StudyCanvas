@@ -6,238 +6,212 @@
   <title>StudyCanvas Board</title>
   <link rel="stylesheet" href="canvas-styles.css"/>
 </head>
-<body>
+<body class="board-light">
 
-<!-- ═══════════════════════════════════════════
-     TOP BAR  (same slim bar as Ziteboard)
-═══════════════════════════════════════════════ -->
+<!-- ════════════════════════════════
+     TOP BAR
+════════════════════════════════ -->
 <header class="zb-topbar">
-
   <div class="zb-topbar__left">
-    <!-- Back -->
-    <button class="zb-icon-btn" id="btn-back" title="Back to Notes">
+    <button class="zb-tb-btn" id="btn-back" title="Back to Notes" aria-label="Back to Notes">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
-    <!-- Board title -->
-    <input  class="zb-title" id="board-title" value="Untitled Board" spellcheck="false"/>
-    <span   class="zb-subject-pill" id="subject-pill"></span>
+    <div class="zb-note-info">
+      <input class="zb-title" id="board-title" value="Loading…" spellcheck="false" aria-label="Board title"/>
+      <span class="zb-subject-pill" id="subject-pill"></span>
+    </div>
+  </div>
+
+  <div class="zb-topbar__centre">
+    <div class="zb-save-status" id="save-status">
+      <span class="zb-save-dot" id="save-dot"></span>
+      <span id="save-text">Saved locally</span>
+    </div>
   </div>
 
   <div class="zb-topbar__right">
-    <!-- Auto-save badge -->
-    <span class="zb-save-badge" id="save-badge">
-      <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-      <span id="save-text">Saved</span>
-    </span>
-
     <!-- Undo -->
-    <button class="zb-icon-btn" id="btn-undo" title="Undo  Ctrl+Z">
+    <button class="zb-tb-btn" id="btn-undo" title="Undo  Ctrl+Z" aria-label="Undo">
       <svg viewBox="0 0 24 24"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
     </button>
     <!-- Redo -->
-    <button class="zb-icon-btn" id="btn-redo" title="Redo  Ctrl+Y">
+    <button class="zb-tb-btn" id="btn-redo" title="Redo  Ctrl+Y" aria-label="Redo">
       <svg viewBox="0 0 24 24"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg>
     </button>
 
-    <div class="zb-topbar-sep"></div>
+    <div class="zb-sep"></div>
 
-    <!-- Zoom -->
-    <button class="zb-icon-btn zb-zoom-btn" id="btn-zoom-out" title="Zoom out">
+    <!-- Zoom controls -->
+    <button class="zb-tb-btn zb-zoom-side" id="btn-zoom-out" title="Zoom Out  Ctrl+−" aria-label="Zoom out">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
     </button>
-    <button class="zb-zoom-display" id="btn-zoom-reset" title="Reset zoom">100%</button>
-    <button class="zb-icon-btn zb-zoom-btn" id="btn-zoom-in" title="Zoom in">
+    <button class="zb-zoom-pct" id="btn-zoom-reset" title="Reset Zoom  (double-click)" aria-label="Reset zoom">100%</button>
+    <button class="zb-tb-btn zb-zoom-side" id="btn-zoom-in" title="Zoom In  Ctrl+=" aria-label="Zoom in">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
     </button>
 
-    <div class="zb-topbar-sep"></div>
+    <div class="zb-sep"></div>
 
     <!-- Grid toggle -->
-    <button class="zb-icon-btn" id="btn-grid" title="Toggle grid">
+    <button class="zb-tb-btn" id="btn-grid" title="Toggle Grid  G" aria-label="Toggle grid">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
     </button>
 
-    <!-- Board theme -->
-    <button class="zb-icon-btn" id="btn-theme" title="Board background">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    <!-- Board background toggle (Light ↔ Dark) -->
+    <button class="zb-tb-btn" id="btn-theme" title="Switch Board Background" aria-label="Toggle board background">
+      <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
 
     <!-- Clear page -->
-    <button class="zb-icon-btn zb-danger-btn" id="btn-clear" title="Clear current page">
+    <button class="zb-tb-btn zb-danger" id="btn-clear" title="Clear Page" aria-label="Clear current page">
       <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
     </button>
 
-    <!-- Export dropdown trigger -->
-    <div class="zb-dropdown-wrap" id="export-wrap">
-      <button class="zb-icon-btn zb-accent-btn" id="btn-export-toggle" title="Export">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Export
-      </button>
-      <div class="zb-dropdown" id="export-menu">
-        <button class="zb-dropdown-item" id="export-png">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          PNG — current page
-        </button>
-        <button class="zb-dropdown-item" id="export-pdf">
-          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          PDF — all pages
-        </button>
-      </div>
-    </div>
+    <!-- Export PDF -->
+    <button class="zb-tb-btn zb-accent" id="btn-export-pdf" title="Export all pages as PDF" aria-label="Export PDF">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+      PDF
+    </button>
   </div>
 </header>
 
-<!-- ═══════════════════════════════════════════
-     MAIN WORKSPACE
-═══════════════════════════════════════════════ -->
+<!-- ════════════════════════════════
+     WORKSPACE
+════════════════════════════════ -->
 <div class="zb-workspace">
 
-  <!-- ── LEFT TOOLBAR (Ziteboard-exact vertical) ── -->
-  <aside class="zb-toolbar" id="zb-toolbar">
+  <!-- ── LEFT TOOLBAR ── -->
+  <aside class="zb-sidebar" role="toolbar" aria-label="Drawing tools">
 
     <!-- Select -->
-    <button class="zb-tool" data-tool="select" title="Select  V">
+    <button class="zb-tool" data-tool="select" title="Select & Move  V" aria-label="Select tool">
       <svg viewBox="0 0 24 24"><path d="M4 4l7 18 3-7 7-3L4 4z"/></svg>
     </button>
 
     <div class="zb-tool-sep"></div>
 
     <!-- Pen -->
-    <button class="zb-tool active" data-tool="pen" title="Pen  P">
+    <button class="zb-tool active" data-tool="pen" title="Pen  P" aria-label="Pen">
       <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
     </button>
-
     <!-- Highlighter -->
-    <button class="zb-tool" data-tool="highlighter" title="Highlighter  H">
+    <button class="zb-tool" data-tool="highlighter" title="Highlighter  H" aria-label="Highlighter">
       <svg viewBox="0 0 24 24"><rect x="2" y="12" width="16" height="8" rx="2"/><path d="M18 12l3-9-9 3 6 6z"/></svg>
     </button>
-
     <!-- Eraser -->
-    <button class="zb-tool" data-tool="eraser" title="Eraser  E">
+    <button class="zb-tool" data-tool="eraser" title="Eraser  E" aria-label="Eraser">
       <svg viewBox="0 0 24 24"><path d="M20 20H7L3 16l10-10 7 7-2.5 2.5"/><path d="M6 18l4-4"/></svg>
     </button>
 
     <div class="zb-tool-sep"></div>
 
-    <!-- Line -->
-    <button class="zb-tool" data-tool="line" title="Line  L">
-      <svg viewBox="0 0 24 24"><line x1="5" y1="19" x2="19" y2="5" stroke-width="2.5"/></svg>
-    </button>
-
-    <!-- Arrow -->
-    <button class="zb-tool" data-tool="arrow" title="Arrow  A">
-      <svg viewBox="0 0 24 24"><line x1="5" y1="19" x2="19" y2="5"/><polyline points="11 5 19 5 19 13"/></svg>
-    </button>
-
-    <!-- Rectangle -->
-    <button class="zb-tool" data-tool="rect" title="Rectangle  R">
-      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
-    </button>
-
-    <!-- Circle -->
-    <button class="zb-tool" data-tool="circle" title="Circle  C">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
-    </button>
-
-    <!-- Triangle -->
-    <button class="zb-tool" data-tool="triangle" title="Triangle">
-      <svg viewBox="0 0 24 24"><polygon points="12 3 22 21 2 21"/></svg>
-    </button>
+    <!-- Shapes -->
+    <button class="zb-tool" data-tool="line"     title="Line  L"      aria-label="Line"><svg viewBox="0 0 24 24"><line x1="5" y1="19" x2="19" y2="5" stroke-width="2.2"/></svg></button>
+    <button class="zb-tool" data-tool="arrow"    title="Arrow  A"     aria-label="Arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="19" x2="19" y2="5"/><polyline points="11 5 19 5 19 13"/></svg></button>
+    <button class="zb-tool" data-tool="rect"     title="Rectangle  R" aria-label="Rectangle"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/></svg></button>
+    <button class="zb-tool" data-tool="circle"   title="Circle  C"    aria-label="Circle"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg></button>
+    <button class="zb-tool" data-tool="triangle" title="Triangle"     aria-label="Triangle"><svg viewBox="0 0 24 24"><polygon points="12 3 22 21 2 21"/></svg></button>
 
     <div class="zb-tool-sep"></div>
 
     <!-- Text -->
-    <button class="zb-tool" data-tool="text" title="Text  T">
+    <button class="zb-tool" data-tool="text" title="Text  T" aria-label="Text">
       <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
     </button>
 
     <div class="zb-tool-sep"></div>
 
-    <!-- Current color chip (opens color panel) -->
-    <button class="zb-color-chip" id="color-chip" title="Color">
-      <span class="zb-color-chip__inner" id="color-chip-inner"></span>
+    <!-- Color chip -->
+    <button class="zb-color-chip" id="color-chip" title="Color & Size" aria-label="Open color panel" aria-expanded="false">
+      <span class="zb-color-chip-inner" id="color-chip-inner" style="background:#0f172a"></span>
     </button>
-
-    <!-- Stroke size indicator -->
-    <button class="zb-size-chip" id="size-chip" title="Stroke width">
+    <!-- Size chip -->
+    <button class="zb-size-chip" id="size-chip" title="Stroke Size" aria-label="Stroke size">
       <span class="zb-size-dot" id="size-dot"></span>
     </button>
 
   </aside>
 
-  <!-- ── FLOATING COLOR PANEL ── -->
-  <div class="zb-color-panel" id="color-panel">
-    <div class="zb-color-panel__swatches">
-      <button class="zb-swatch" data-color="#000000" style="background:#000" title="Black"></button>
-      <button class="zb-swatch" data-color="#ffffff" style="background:#fff;border:1px solid #ccc" title="White"></button>
-      <button class="zb-swatch" data-color="#ef4444" style="background:#ef4444" title="Red"></button>
-      <button class="zb-swatch" data-color="#f97316" style="background:#f97316" title="Orange"></button>
-      <button class="zb-swatch" data-color="#eab308" style="background:#eab308" title="Yellow"></button>
-      <button class="zb-swatch" data-color="#22c55e" style="background:#22c55e" title="Green"></button>
-      <button class="zb-swatch" data-color="#06b6d4" style="background:#06b6d4" title="Cyan"></button>
-      <button class="zb-swatch" data-color="#3b82f6" style="background:#3b82f6" title="Blue"></button>
-      <button class="zb-swatch" data-color="#8b5cf6" style="background:#8b5cf6" title="Purple"></button>
-      <button class="zb-swatch" data-color="#ec4899" style="background:#ec4899" title="Pink"></button>
-      <button class="zb-swatch" data-color="#6b7280" style="background:#6b7280" title="Gray"></button>
-      <button class="zb-swatch" data-color="#1e293b" style="background:#1e293b" title="Dark"></button>
+  <!-- ── FLOATING COLOR + SIZE PANEL ── -->
+  <div class="zb-cpanel" id="color-panel" role="dialog" aria-label="Color and stroke panel" aria-hidden="true">
+    <p class="zb-cpanel-label">Color</p>
+    <div class="zb-swatches">
+      <button class="zb-sw active" data-color="#0f172a" style="background:#0f172a"                          title="Dark"   aria-label="Dark"></button>
+      <button class="zb-sw"        data-color="#ffffff" style="background:#fff;border:1.5px solid #e2e8f0"  title="White"  aria-label="White"></button>
+      <button class="zb-sw"        data-color="#ef4444" style="background:#ef4444"                          title="Red"    aria-label="Red"></button>
+      <button class="zb-sw"        data-color="#f97316" style="background:#f97316"                          title="Orange" aria-label="Orange"></button>
+      <button class="zb-sw"        data-color="#eab308" style="background:#eab308"                          title="Yellow" aria-label="Yellow"></button>
+      <button class="zb-sw"        data-color="#22c55e" style="background:#22c55e"                          title="Green"  aria-label="Green"></button>
+      <button class="zb-sw"        data-color="#06b6d4" style="background:#06b6d4"                          title="Cyan"   aria-label="Cyan"></button>
+      <button class="zb-sw"        data-color="#3b82f6" style="background:#3b82f6"                          title="Blue"   aria-label="Blue"></button>
+      <button class="zb-sw"        data-color="#8b5cf6" style="background:#8b5cf6"                          title="Purple" aria-label="Purple"></button>
+      <button class="zb-sw"        data-color="#ec4899" style="background:#ec4899"                          title="Pink"   aria-label="Pink"></button>
+      <button class="zb-sw"        data-color="#64748b" style="background:#64748b"                          title="Gray"   aria-label="Gray"></button>
+      <label  class="zb-sw zb-sw-custom" title="Custom color" aria-label="Custom color">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8" stroke-width="2" stroke-linecap="round"/></svg>
+        <input type="color" id="custom-color" value="#0f172a" aria-label="Custom color picker"/>
+      </label>
     </div>
-    <label class="zb-custom-color-wrap" title="Custom">
-      <span>Custom</span>
-      <input type="color" id="custom-color" value="#000000"/>
-    </label>
-    <!-- Stroke size -->
-    <div class="zb-size-row">
-      <span class="zb-size-row__label">Size</span>
-      <div class="zb-size-presets">
-        <button class="zb-size-preset" data-sz="2"  title="Thin"><span style="width:3px;height:3px;background:currentColor;border-radius:50%;display:block"></span></button>
-        <button class="zb-size-preset" data-sz="5"  title="Medium"><span style="width:7px;height:7px;background:currentColor;border-radius:50%;display:block"></span></button>
-        <button class="zb-size-preset" data-sz="10" title="Thick"><span style="width:12px;height:12px;background:currentColor;border-radius:50%;display:block"></span></button>
-        <button class="zb-size-preset" data-sz="20" title="XL"><span style="width:18px;height:18px;background:currentColor;border-radius:50%;display:block"></span></button>
-      </div>
-      <input type="range" min="1" max="40" value="3" class="zb-size-slider" id="size-slider"/>
+
+    <p class="zb-cpanel-label" style="margin-top:12px">Stroke Size</p>
+    <div class="zb-size-presets">
+      <button class="zb-sz-btn active" data-sz="2"  aria-label="Thin"><span style="width:3px;height:3px"></span></button>
+      <button class="zb-sz-btn"        data-sz="5"  aria-label="Medium"><span style="width:7px;height:7px"></span></button>
+      <button class="zb-sz-btn"        data-sz="10" aria-label="Thick"><span style="width:12px;height:12px"></span></button>
+      <button class="zb-sz-btn"        data-sz="20" aria-label="Extra thick"><span style="width:18px;height:18px"></span></button>
     </div>
+    <input type="range" min="1" max="40" value="3" class="zb-size-slider" id="size-slider" aria-label="Stroke size"/>
   </div>
 
-  <!-- ── CANVAS AREA ── -->
+  <!-- ── CANVAS AREA ──
+       canvas-outer clips overflow
+       canvas-inner is scaled for zoom (transform applied here)
+       canvases fill 100% of canvas-inner
+  ── -->
   <div class="zb-canvas-wrap" id="canvas-wrap">
-    <canvas id="grid-canvas"></canvas>
-    <canvas id="draw-canvas"></canvas>
-    <canvas id="temp-canvas"></canvas>
-    <textarea id="text-box" class="zb-text-box" placeholder="Type…  (Ctrl+Enter = commit)"></textarea>
+    <div class="zb-canvas-outer" id="canvas-outer">
+      <div class="zb-canvas-inner" id="canvas-inner">
+        <canvas id="grid-canvas"></canvas>
+        <canvas id="draw-canvas"></canvas>
+        <canvas id="temp-canvas"></canvas>
+      </div>
+    </div>
+    <!-- Text input sits OUTSIDE the inner so it is not scaled -->
+    <textarea id="text-box" class="zb-text-box" placeholder="Type…  (Ctrl+Enter to commit)" aria-label="Text input"></textarea>
   </div>
 
 </div>
 
-<!-- ═══════════════════════════════════════════
-     BOTTOM PAGE BAR  (Ziteboard-style)
-═══════════════════════════════════════════════ -->
-<footer class="zb-pagebar">
-  <div class="zb-pagebar__scroll" id="page-tabs-wrap">
-    <div class="zb-pagebar__tabs" id="page-tabs"></div>
+<!-- ════════════════════════════════
+     BOTTOM PAGE BAR
+════════════════════════════════ -->
+<footer class="zb-pagebar" role="navigation" aria-label="Pages">
+  <div class="zb-pagebar-scroll">
+    <div class="zb-page-tabs" id="page-tabs"></div>
   </div>
-  <button class="zb-add-page" id="btn-add-page">
+  <button class="zb-add-page" id="btn-add-page" aria-label="Add new page">
     <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     Add Page
   </button>
 </footer>
 
-<!-- ── CONFIRM MODAL ── -->
-<div class="zb-modal-overlay" id="zb-confirm">
+<!-- Confirm modal -->
+<div class="zb-modal-overlay" id="zb-confirm" role="dialog" aria-modal="true">
   <div class="zb-modal">
-    <p class="zb-modal__title"  id="conf-title">Are you sure?</p>
-    <p class="zb-modal__body"   id="conf-body">This cannot be undone.</p>
-    <div class="zb-modal__btns">
-      <button class="zb-btn-ghost"   id="conf-cancel">Cancel</button>
-      <button class="zb-btn-danger"  id="conf-ok">Yes, delete</button>
+    <p class="zb-modal-title" id="conf-title">Confirm</p>
+    <p class="zb-modal-body"  id="conf-body"></p>
+    <div class="zb-modal-btns">
+      <button class="zb-btn-ghost"  id="conf-cancel">Cancel</button>
+      <button class="zb-btn-danger" id="conf-ok">Confirm</button>
     </div>
   </div>
 </div>
 
-<!-- ── TOAST ── -->
-<div class="zb-toast" id="zb-toast"></div>
+<!-- Toast -->
+<div class="zb-toast" id="zb-toast" role="status" aria-live="polite"></div>
 
-<!-- ── Custom cursor ── -->
-<div class="zb-cursor" id="zb-cursor"></div>
+<!-- Cursor dot -->
+<div class="zb-cursor" id="zb-cursor" aria-hidden="true"></div>
 
 <script src="canvas-script.js"></script>
 </body>
