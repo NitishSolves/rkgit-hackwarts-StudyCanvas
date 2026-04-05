@@ -3,7 +3,7 @@
 
 
 ## About
-StudyCanvas is a powerful, lightweight digital notebook that replaces physical books, copies, and pens. It delivers a true **bagless campus experience** for B.Tech students with smooth drawing, multi-page support, PDF export, and smart organization.
+StudyCanvas is a powerful, lightweight digital notebook that replaces physical books, copies, and pens. It delivers a true **bagless campus experience** for College students with smooth drawing, multi-page support, PDF export, and smart organization.
 
 
 ## Tech stack
